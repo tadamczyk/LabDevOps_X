@@ -11,7 +11,9 @@ const redisClient = redis.createClient({
   port: keys.redisPort
 });
 
-const pgClient = new Pool({
+redisClient.set("counter", 0);
+
+const postgresClient = new Pool({
   host: keys.pgHost,
   port: keys.pgPort,
   user: keys.pgUser,
@@ -19,67 +21,72 @@ const pgClient = new Pool({
   database: keys.pgDatabase
 });
 
-redisClient.set("counter", 0);
+postgresClient.query("CREATE TABLE IF NOT EXISTS results (number INT)")
+  .catch(error => console.log(error));
 
-pgClient.query("CREATE TABLE IF NOT EXISTS results (number INT)").catch(error => console.log(error));
+app.get("/", (request, response) => {
+  response.send("Multi container app - backend");
+});
 
-app.get("/", (req, res) => {
+app.get("/counter", (request, response) => {
   redisClient.get("counter", (err, counterValue) => {
-    res.send("Counter: " + counterValue);
+    response.send("Counter: " + counterValue);
     redisClient.set("counter", parseInt(counterValue) + 1);
   });
 });
 
 function nwd(a, b) {
-  var tmp;
-
-  if (a < b) {
-    tmp = a;
-    a = b;
-    b = tmp;
-  }
+  var temp;
 
   while (b) {
-    tmp = a % b;
+    temp = a % b;
     a = b;
-    b = tmp;
+    b = temp;
   }
 
   return a;
 };
 
-app.get("/nwd/:number1/:number2", (req, res) => {
-  const number1 = req.params.number1;
-  const number2 = req.params.number2;
-  const key = "NWD(" + number1 + ", " + number2 + ")";
+app.get("/nwd/:number1/:number2", (request, response) => {
+  const number1 = request.params.number1;
+  const number2 = request.params.number2;
+
+  if (number1 < number2) {
+    var temp = number1;
+    number1 = number2;
+    number2 = temp;
+  }
+
+  const key = "[" + number1 + "," + number2 + "]";
 
   redisClient.get(key, (err, value) => {
     if (value === null || value === undefined) {
       value = nwd(number1, number2);
       redisClient.set(key, parseInt(value));
-      pgClient.query("INSERT INTO results (number) VALUES ($1)", [value]).catch(error => console.log(error));
+      postgresClient.query("INSERT INTO results (number) VALUES ($1)", [value])
+        .catch(error => console.log(error));
     }
 
-    res.send(key + " = " + value);
+    response.send("NWD" + key + " = " + value);
   });
 });
 
-app.get("/nwd/results", (req, resp) => {
-  const result = null;
-
-  pgClient.query("SELECT number FROM results", (error, results) => {
+app.get("/nwd/results", (request, response) => {
+  postgresClient.query("SELECT number FROM results", (error, results) => {
     if (error) {
-      throw error
-    };
+      throw error;
+    }
 
-    resp.status(200).json(results.rows);
+    response.status(200).json(results.rows);
   });
 });
 
 app.listen(8080, () => {
-  console.log("Listen on port 8080");
+  console.log("Listening on port 8080");
   console.log("pgHost: " + keys.pgHost);
   console.log("pgPort: " + keys.pgPort);
+  console.log("pgDatabase: " + keys.pgDatabase);
+  console.log("pgUser: " + keys.pgUser);
   console.log("redisHost: " + keys.redisHost);
   console.log("redisPort: " + keys.redisPort);
 });

@@ -1,5 +1,0 @@
-docker build -f Dockerfile.dev .
-docker network create demoapp
-docker run --name my-postgres --rm -e POSTGRES_PASSWORD=1qaz2wsx --network demoapp postgres
-docker run --name my-redis --rm --network demoapp redis
-docker run --name my-backend --rm -e REDIS_HOST=my-redis -e REDIS_PORT=6379 -e PG_HOST=my-postgres -e PG_USER=postgres -e PG_PASSWORD=1qaz2wsx -e PG_PORT=5432 -e PG_DATABASE=postgres --network demoapp -p 8080:8080 IMAGE_ID
