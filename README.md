@@ -8,7 +8,8 @@ Docker ID: **[tadamczyk](https://hub.docker.com/u/tadamczyk)**
 
 Projekty:
 * [backend](backend)
-  * counter - `/`
+  * root - `/`
+  * counter - `/counter`
   * nwd - `/nwd/number1/number2`
   * nwd/results - `/nwd/results`
 * [frontend](frontend)
