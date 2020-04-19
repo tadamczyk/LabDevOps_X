@@ -2,6 +2,6 @@ sudo: required
 services:
   - docker
 before_install:
-  - docker build -t tadamczyk/frontend -f Dockerfile.dev frontend/.
+  - docker build -t tadamczyk/frontend -f frontend/Dockerfile.dev frontend/.
 script:
   - docker run -e CI=true tadamczyk/frontend npm test
