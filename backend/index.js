@@ -48,8 +48,8 @@ function nwd(a, b) {
 };
 
 app.get("/nwd/:number1/:number2", (request, response) => {
-  const number1 = request.params.number1;
-  const number2 = request.params.number2;
+  var number1 = request.params.number1;
+  var number2 = request.params.number2;
 
   if (number1 < number2) {
     var temp = number1;

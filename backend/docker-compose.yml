@@ -1,12 +1,40 @@
 version: '3'
 services:
   my-redis:
-    image: 'redis'
+    image: redis
+    container_name: my-redis
+    restart: on-failure
+    networks:
+      - multi-container-app-network
+
   my-postgres:
-    image: 'postgres'
+    image: postgres
+    container_name: my-postgres
+    restart: on-failure
+    environment:
+      - POSTGRES_PASSWORD=1qaz2wsx
+    networks:
+      - multi-container-app-network
+
   my-backend:
     build:
       context: .
       dockerfile: Dockerfile.dev
+    container_name: my-backend
+    restart: on-failure
+    environment:
+      - REDIS_HOST=my-redis
+      - REDIS_PORT=6379
+      - PG_HOST=my-postgres
+      - PG_PORT=5432
+      - PG_USER=postgres
+      - PG_PASSWORD=1qaz2wsx
+      - PG_DATABASE=postgres
+    networks:
+      - multi-container-app-network
     ports:
-      - '8080:8080'
+      - 8080:8080
+
+networks:
+  multi-container-app-network:
+    driver: bridge
