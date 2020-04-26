@@ -1,17 +1,14 @@
 const keys = require("./keys");
 
+const bodyParser = require("body-parser");
+const cors = require("cors");
 const express = require("express");
 const redis = require("redis");
 const { Pool } = require("pg");
 
 const app = express();
-
-const redisClient = redis.createClient({
-  host: keys.redisHost,
-  port: keys.redisPort
-});
-
-redisClient.set("counter", 0);
+app.use(bodyParser.json());
+app.use(cors());
 
 const postgresClient = new Pool({
   host: keys.pgHost,
@@ -21,72 +18,108 @@ const postgresClient = new Pool({
   database: keys.pgDatabase
 });
 
-postgresClient.query("CREATE TABLE IF NOT EXISTS results (number INT)")
+const redisClient = redis.createClient({
+  host: keys.redisHost,
+  port: keys.redisPort,
+  retry_strategy: () => 1000
+});
+
+const port = 4000;
+
+/********************************/
+
+postgresClient
+  .on("error", () => console.log("Cannot connect to PostgreSQL database."));
+
+postgresClient
+  .query("CREATE TABLE IF NOT EXISTS leap_years (date DATE, next_leap_year INT);")
   .catch(error => console.log(error));
 
-app.get("/", (request, response) => {
-  response.send("Multi container app - backend");
-});
-
-app.get("/counter", (request, response) => {
-  redisClient.get("counter", (err, counterValue) => {
-    response.send("Counter: " + counterValue);
-    redisClient.set("counter", parseInt(counterValue) + 1);
+app
+  .get("/", (request, response) => {
+    response.send("Multi container app - backend");
   });
-});
 
-function nwd(a, b) {
-  var temp;
+function isLeapYear(year) {
+  return new Date(year, 1, 29).getDate() === 29;
+}
 
-  while (b) {
-    temp = a % b;
-    a = b;
-    b = temp;
+app
+  .get("/leapYear/:year", (request, response) => {
+    var year = request.params.year;
+
+    redisClient
+      .get(year, (error, isLeap) => {
+        if (isLeap === null || isLeap === undefined) {
+          isLeap = isLeapYear(year);
+          redisClient
+            .set(year, parseInt(isLeap));
+        }
+
+        response
+          .send(`Year ${year} is ${isLeap ? "leap" : "not leap"}.`);
+      });
+  });
+
+function getNextLeapYear(date) {
+  var dateParts = date.split("-");
+  var myDate = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
+  var year = myDate.getFullYear();
+  var isLeap = isLeapYear(year);
+
+  if (isLeap === true && myDate.getMonth() > 1) {
+    return year + 4;
   }
 
-  return a;
+  while (isLeapYear(year) === false) {
+    year = year + 1;
+    isLeap = isLeapYear(year);
+  }
+
+  return year;
 };
 
-app.get("/nwd/:number1/:number2", (request, response) => {
-  var number1 = request.params.number1;
-  var number2 = request.params.number2;
+app
+  .get("/leapYear/next/:date", (request, response) => {
+    var date = request.params.date;
 
-  if (number1 < number2) {
-    var temp = number1;
-    number1 = number2;
-    number2 = temp;
-  }
+    redisClient
+      .get(date, (error, nextLeapYear) => {
+        if (nextLeapYear === null || nextLeapYear === undefined) {
+          nextLeapYear = getNextLeapYear(date);
+          redisClient
+            .set(date, parseInt(nextLeapYear));
 
-  const key = "[" + number1 + "," + number2 + "]";
+          postgresClient
+            .query("INSERT INTO leap_years (date, next_leap_year) VALUES ($1, $2);", [date, nextLeapYear])
+            .catch(error => console.log(error));
+        }
 
-  redisClient.get(key, (err, value) => {
-    if (value === null || value === undefined) {
-      value = nwd(number1, number2);
-      redisClient.set(key, parseInt(value));
-      postgresClient.query("INSERT INTO results (number) VALUES ($1)", [value])
-        .catch(error => console.log(error));
-    }
-
-    response.send("NWD" + key + " = " + value);
+        response
+          .send(`Next leap year for ${date} is ${nextLeapYear}.`);
+      });
   });
-});
 
-app.get("/nwd/results", (request, response) => {
-  postgresClient.query("SELECT number FROM results", (error, results) => {
-    if (error) {
-      throw error;
-    }
+app
+  .get("/leapYear/next/all/results", (request, response) => {
+    postgresClient
+      .query("SELECT date, next_leap_year FROM leap_years;", (error, results) => {
+        if (error) {
+          throw error;
+        }
 
-    response.status(200).json(results.rows);
+        response
+          .status(200)
+          .json(results.rows);
+      });
   });
-});
 
-app.listen(8080, () => {
-  console.log("Listening on port 8080");
-  console.log("pgHost: " + keys.pgHost);
-  console.log("pgPort: " + keys.pgPort);
-  console.log("pgDatabase: " + keys.pgDatabase);
-  console.log("pgUser: " + keys.pgUser);
-  console.log("redisHost: " + keys.redisHost);
-  console.log("redisPort: " + keys.redisPort);
+app.listen(port, () => {
+  console.log(`Listening on port ${port}`);
+  console.log(`pgHost: ${keys.pgHost}`);
+  console.log(`pgPort: ${keys.pgPort}`);
+  console.log(`pgDatabase: ${keys.pgDatabase}`);
+  console.log(`pgUser: "${keys.pgUser}`);
+  console.log(`redisHost: ${keys.redisHost}`);
+  console.log(`redisPort: ${keys.redisPort}`);
 });
