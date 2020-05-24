@@ -119,7 +119,7 @@ app.listen(port, () => {
   console.log(`pgHost: ${keys.pgHost}`);
   console.log(`pgPort: ${keys.pgPort}`);
   console.log(`pgDatabase: ${keys.pgDatabase}`);
-  console.log(`pgUser: "${keys.pgUser}`);
+  console.log(`pgUser: ${keys.pgUser}`);
   console.log(`redisHost: ${keys.redisHost}`);
   console.log(`redisPort: ${keys.redisPort}`);
 });
