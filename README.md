@@ -15,3 +15,4 @@ Projekty:
   * nextLeapYear - `/leapYear/next/:date`
   * nextLeapYearResults - `/leapYear/next/all/results`
 * [frontend](frontend)
+* [k8s](k8s)

@@ -10,6 +10,6 @@ TYPE = `[pod|(rs|replicaset)|(deploy|deployment)|(svc|service)]`
 `kubectl create -f FILENAME` => create types for passed FILENAME  
 `kubectl delete TYPE NAME` => delete TYPE for passed NAME  
 `kubectl scale --replicas=VALUE rs RSNAME` => set VALUE replicas for passed RSNAME  
-`kubectl replace -f FILENAME` => replace elements by passed in FILENAME
-`kubectl logs TYPE NAME` => show logs for passed TYPE with NAME
+`kubectl replace -f FILENAME` => replace elements by passed in FILENAME  
+`kubectl logs TYPE NAME` => show logs for passed TYPE with NAME  
 `kubectl exec -ti dnsutils -- nslookup SVCNAME` => show DNS info for passed SVCNAME
