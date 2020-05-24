@@ -1,6 +1,6 @@
 # K8S - commands
 
-TYPE = `[pod|(rs|replicaset)|(deploy|deployment)|(svc|service)]`
+TYPE = `[pod|(rs|replicaset)|(deploy|deployment)|(svc|service)]` 
 
 `kubectl cluster-info` => show information about K8S master  
 `kubectl config current-context` => show current context information  

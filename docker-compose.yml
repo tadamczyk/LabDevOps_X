@@ -1,4 +1,4 @@
-version: '3'
+version: "3"
 services:
   my-redis:
     image: redis
@@ -25,7 +25,7 @@ services:
       - /opt/app/node_modules
       - ./backend:/opt/app
     ports:
-      - '4000:4000'
+      - "4000:4000"
   my-frontend:
     build:
       context: ./frontend
@@ -35,7 +35,7 @@ services:
       - /opt/app/node_modules
       - ./frontend:/opt/app
     ports:
-      - '3000:3000'
+      - "3000:3000"
     tty: true
   my-nginx:
     restart: always
@@ -44,4 +44,4 @@ services:
       dockerfile: Dockerfile.dev
     container_name: my-nginx
     ports:
-      - '8080:80'
+      - "8080:80"
