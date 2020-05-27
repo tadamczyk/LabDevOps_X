@@ -1,4 +1,4 @@
-# Vi commands and key shortcuts
+# Vi key shortcuts
 
 `Command Mode` -> ESC + :  
 `Insertion Mode` -> i/I/a/A/o/O  

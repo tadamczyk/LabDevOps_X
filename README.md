@@ -20,7 +20,7 @@ Projekty:
 
 ****
 
-Zestaw komend:
-* [Vi](CMD-VI.md)  
-* [Docker](CMD-DOCKER.md)  
-* [Kubernetes](CMD-KUBERNETES.md)
+Zestaw komend oraz skrótów klawiszowych:
+* [Vi](NOTES-VI.md)  
+* [Docker](NOTES-DOCKER.md)  
+* [Kubernetes](NOTES-KUBERNETES.md)
