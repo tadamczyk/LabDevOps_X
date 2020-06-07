@@ -10,3 +10,4 @@ kubectl.exe delete deploy my-postgres-deployment
 
 kubectl.exe delete pvc my-postgres-pvc
 kubectl.exe delete secret my-postgres-secret
+kubectl.exe delete configmap my-app-configmap

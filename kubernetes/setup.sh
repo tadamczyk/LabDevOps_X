@@ -5,6 +5,8 @@ docker build -t tadamczyk/backend .
 docker push tadamczyk/backend
 cd ..
 
+kubectl.exe apply -f app-configmap.yml
+
 kubectl.exe apply -f postgres-secret.yml
 kubectl.exe apply -f postgres-pvc.yml
 kubectl.exe apply -f postgres-deployment.yml
