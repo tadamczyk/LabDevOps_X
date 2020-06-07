@@ -1,28 +1,27 @@
+const keys = require("./keys");
 const express = require("express");
 const redis = require("redis");
-const { v4: uuidv4 } = require("uuid");
 const { Pool } = require("pg");
+const { v4: uuidv4 } = require("uuid");
 
 const app = express();
 const appId = uuidv4();
-const port = 5000;
 
 const postgresClient = new Pool({
-  host: "my-postgres-service",
-  port: 5432,
-  user: "postgres",
-  password: "pgpassword123",
-  database: "postgres"
+  host: keys.pgHost,
+  port: keys.pgPort,
+  user: keys.pgUser,
+  database: keys.pgDatabase,
+  password: keys.pgPassword
 });
 
 const redisClient = redis.createClient({
-  host: "my-redis-service",
-  port: 6379,
+  host: keys.redisHost,
+  port: keys.redisPort,
   retry_strategy: () => 1000
 });
 
-postgresClient
-  .on("error", () => console.log("Cannot connect to PostgreSQL database."));
+postgresClient.on("error", () => console.log("Cannot connect to PostgreSQL database."));
 
 postgresClient
   .query("CREATE TABLE IF NOT EXISTS CURRENT_APP_ID (id SERIAL, appId TEXT, activeFrom TIMESTAMPTZ NOT NULL, activeTo TIMESTAMPTZ NULL);")
@@ -59,6 +58,12 @@ app.get("/appId", (request, response) => {
     });
 });
 
-app.listen(port, error => {
-  console.log(`Listening on port ${port}`);
+app.listen(keys.port, error => {
+  console.log(`Listening on port: ${keys.port}`);
+  console.log(`PostgreSQL host: ${keys.pgHost}`);
+  console.log(`PostgreSQL port: ${keys.pgPort}`);
+  console.log(`PostgreSQL user: ${keys.pgUser}`);
+  console.log(`PostgreSQL database: ${keys.pgDatabase}`);
+  console.log(`Redis host: ${keys.redisHost}`);
+  console.log(`Redis port: ${keys.redisPort}`);
 });

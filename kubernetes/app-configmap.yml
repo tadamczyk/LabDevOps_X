@@ -3,7 +3,10 @@ kind: ConfigMap
 metadata:
   name: my-app-configmap
 data:
+  PORT: "5000"
+  PG_HOST: my-postgres-service
   PG_PORT: "5432"
   PG_USER: postgres
   PG_DATABASE: postgres
-  REDIS_PORT: "6479"
+  REDIS_HOST: my-redis-service
+  REDIS_PORT: "6379"

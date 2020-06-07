@@ -16,6 +16,11 @@ spec:
       containers:
         - name: my-backend-container
           image: tadamczyk/backend
+          envFrom:
+            - secretRef:
+                name: my-postgres-secret
+            - configMapRef:
+                name: my-app-configmap
   replicas: 3
   selector:
     matchLabels:
