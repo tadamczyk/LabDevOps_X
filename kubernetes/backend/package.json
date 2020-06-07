@@ -5,6 +5,7 @@
   "main": "index.js",
   "dependencies": {
     "express": "*",
+    "pg": "*",
     "redis": "*",
     "uuid": "*"
   },

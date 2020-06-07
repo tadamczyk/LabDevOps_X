@@ -1,6 +1,6 @@
 # Kubernetes commands
 
-TYPE = `[pod|(rs|replicaset)|(deploy|deployment)|(svc|service)]`
+TYPE = `[pod|(rs|replicaset)|(deploy|deployment)|(svc|service)|pvc|secret]`
 
 `kubectl version` -> get version information  
 `kubectl cluster-info` -> get cluster information  
@@ -13,4 +13,5 @@ TYPE = `[pod|(rs|replicaset)|(deploy|deployment)|(svc|service)]`
 `kubectl delete TYPE NAME` -> delete type with passed name  
 `kubectl scale --replicas=VALUE rs RSNAME` -> set replicas for passed replicaset name  
 `kubectl replace -f FILE` -> replace elements by file  
+`kubectl apply -f FILE` -> apply configuration from file  
 `kubectl exec -ti dnsutils -- nslookup SVCNAME` -> get DNS information for service with passed name
