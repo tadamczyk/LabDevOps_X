@@ -1,12 +1,13 @@
 const keys = require("./keys");
-
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const express = require("express");
 const redis = require("redis");
 const { Pool } = require("pg");
+const { v4: uuidv4 } = require("uuid");
 
 const app = express();
+const appId = uuidv4();
 app.use(bodyParser.json());
 app.use(cors());
 
@@ -35,7 +36,7 @@ postgresClient
 
 app
   .get("/", (request, response) => {
-    response.send("Multi container app - backend");
+    response.send(`My Exam App - backend - appId: [${appId}]`);
   });
 
 function isLeapYear(year) {
@@ -113,11 +114,11 @@ app
   });
 
 app.listen(keys.port, () => {
-  console.log(`Listening on port ${keys.port}`);
-  console.log(`pgHost: ${keys.pgHost}`);
-  console.log(`pgPort: ${keys.pgPort}`);
-  console.log(`pgDatabase: ${keys.pgDatabase}`);
-  console.log(`pgUser: ${keys.pgUser}`);
-  console.log(`redisHost: ${keys.redisHost}`);
-  console.log(`redisPort: ${keys.redisPort}`);
+  console.log(`Listening on port: ${keys.port}`);
+  console.log(`PostgreSQL host: ${keys.pgHost}`);
+  console.log(`PostgreSQL port: ${keys.pgPort}`);
+  console.log(`PostgreSQL user: ${keys.pgUser}`);
+  console.log(`PostgreSQL database: ${keys.pgDatabase}`);
+  console.log(`Redis host: ${keys.redisHost}`);
+  console.log(`Redis port: ${keys.redisPort}`);
 });

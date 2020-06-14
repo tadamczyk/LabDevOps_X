@@ -13,20 +13,20 @@ cd ..
 # Install ingress-nginx (needed only once)
 # kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/provider/cloud/deploy.yaml
 
-kubectl.exe apply -f app-configmap.yml
+kubectl.exe apply -f k8s/app-configmap.yml
 
-kubectl.exe apply -f postgres-secret.yml
-kubectl.exe apply -f postgres-pvc.yml
-kubectl.exe apply -f postgres-deployment.yml
-kubectl.exe apply -f postgres-service-clusterip.yml
+kubectl.exe apply -f k8s/postgres-secret.yml
+kubectl.exe apply -f k8s/postgres-pvc.yml
+kubectl.exe apply -f k8s/postgres-deployment.yml
+kubectl.exe apply -f k8s/postgres-service-clusterip.yml
 
-kubectl.exe apply -f redis-deployment.yml
-kubectl.exe apply -f redis-service-clusterip.yml
+kubectl.exe apply -f k8s/redis-deployment.yml
+kubectl.exe apply -f k8s/redis-service-clusterip.yml
 
-kubectl.exe apply -f backend-deployment.yml
-kubectl.exe apply -f backend-service-clusterip.yml
+kubectl.exe apply -f k8s/backend-deployment.yml
+kubectl.exe apply -f k8s/backend-service-clusterip.yml
 
-kubectl.exe apply -f frontend-deployment.yml
-kubectl.exe apply -f frontend-service-clusterip.yml
+kubectl.exe apply -f k8s/frontend-deployment.yml
+kubectl.exe apply -f k8s/frontend-service-clusterip.yml
 
-kubectl.exe apply -f ingress-service.yml
+kubectl.exe apply -f k8s/ingress-service.yml
