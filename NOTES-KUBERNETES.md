@@ -1,6 +1,6 @@
 # Kubernetes commands
 
-TYPE = `[pod|(rs|replicaset)|(deploy|deployment)|(svc|service)|pvc|secret]`
+TYPE = `[pod|(rs|replicaset)|(deploy|deployment)|(svc|service)|ingress|pvc|pv|secret|configmap|namespaces]`
 
 `kubectl version` -> get version information  
 `kubectl cluster-info` -> get cluster information  

@@ -7,16 +7,12 @@ Travis CI ID: **[tadamczyk](https://travis-ci.org/github/tadamczyk)**
 
 ****
 
-Temat: **wyznaczanie następnego roku przestępnego dla podanej daty**
+Temat projektu egzaminacyjnego: **wyznaczanie następnego roku przestępnego dla podanej daty**
 
 Projekty:
-* [backend](backend)
-  + isLeapYear - `/leapYear/:year` 
-  + nextLeapYearForDate - `/leapYear/next/:date` 
-  + nextLeapYearResults - `/leapYear/next/all/results`
-* [frontend](frontend)
+* [docker](docker)
 * [kubernetes](kubernetes)
-* [nginx](nginx)
+* [exam](exam)
 
 ****
 
