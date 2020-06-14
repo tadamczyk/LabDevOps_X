@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: my-backend-container
-          image: tadamczyk/kubernetes-backend
+          image: tadamczyk/backend
           envFrom:
             - secretRef:
                 name: my-postgres-secret

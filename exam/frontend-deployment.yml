@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: my-frontend-container
-          image: tadamczyk/kubernetes-frontend
+          image: tadamczyk/frontend
   replicas: 3
   selector:
     matchLabels:

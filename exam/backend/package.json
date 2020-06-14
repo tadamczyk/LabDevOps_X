@@ -4,10 +4,12 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
+    "body-parser": "*",
+    "cors": "*",
     "express": "*",
+    "nodemon": "*",
     "pg": "*",
-    "redis": "*",
-    "uuid": "*"
+    "redis": "*"
   },
   "scripts": {
     "start": "node index.js"

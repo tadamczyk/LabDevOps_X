@@ -1,13 +1,13 @@
 #!/bin/bash
 
 cd backend
-docker build -t tadamczyk/kubernetes-backend .
-docker push tadamczyk/kubernetes-backend
+docker build -t tadamczyk/backend .
+docker push tadamczyk/backend
 cd ..
 
 cd frontend
-docker build -t tadamczyk/kubernetes-frontend .
-docker push tadamczyk/kubernetes-frontend
+docker build -t tadamczyk/frontend .
+docker push tadamczyk/frontend
 cd ..
 
 # Install ingress-nginx (needed only once)
