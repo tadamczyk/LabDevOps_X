@@ -10,9 +10,9 @@ Travis CI ID: **[tadamczyk](https://travis-ci.org/github/tadamczyk)**
 Temat projektu egzaminacyjnego: **wyznaczanie następnego roku przestępnego dla podanej daty**
 
 Projekty:
-* [docker](docker)
-* [kubernetes](kubernetes)
-* [exam](exam)
+* [docker](docker) (warsztaty)
+* [kubernetes](kubernetes) (warsztaty)
+* [exam](exam) (projekt egzaminacyjny)
 
 ****
 

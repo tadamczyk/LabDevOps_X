@@ -24,8 +24,6 @@ const redisClient = redis.createClient({
   retry_strategy: () => 1000
 });
 
-const port = 5000;
-
 /********************************/
 
 postgresClient
@@ -114,8 +112,8 @@ app
       });
   });
 
-app.listen(port, () => {
-  console.log(`Listening on port ${port}`);
+app.listen(keys.port, () => {
+  console.log(`Listening on port ${keys.port}`);
   console.log(`pgHost: ${keys.pgHost}`);
   console.log(`pgPort: ${keys.pgPort}`);
   console.log(`pgDatabase: ${keys.pgDatabase}`);

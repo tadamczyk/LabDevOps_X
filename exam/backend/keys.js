@@ -1,4 +1,5 @@
 module.exports = {
+  port: process.env.PORT,
   pgHost: process.env.PG_HOST,
   pgPort: process.env.PG_PORT,
   pgUser: process.env.PG_USER,
